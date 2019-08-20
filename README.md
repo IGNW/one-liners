@@ -1,4 +1,5 @@
 # one-liners
+> "Immature engineers imitate; mature engineers steal" --T.S. Eliot
 
 ## what
 
