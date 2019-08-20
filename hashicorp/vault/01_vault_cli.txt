@@ -1,0 +1,4 @@
+# Syntax to write a secret to a prexistig vault installation
+
+$ vault write -address="http://127.0.0.1:8200" -namespace="my-organization" \
+        auth/userpass/users/bob password="long-password" policies="admin"

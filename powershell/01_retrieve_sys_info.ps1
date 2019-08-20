@@ -6,3 +6,4 @@ gwmi win32_baseboard | select product
 gwmi win32_bios | select serialnumber
 gwmi win32_bios | select SMBIOSBIOSVersion
 gwmi win32_printer | select Name, Portname, Default
+
