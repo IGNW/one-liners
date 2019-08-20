@@ -12,4 +12,4 @@ As a developer, I need a place to store field-tested code, quick hacks, and shor
 
 Pull the repo, branch, add your script and push.
 
-Preferred format: one text file per one-liner, with explanatory comments.
+Preferred format: one text file per one-liner, with explanatory comments if needed. Start file names with a number value to aid auto-completion.

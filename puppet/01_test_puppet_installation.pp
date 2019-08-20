@@ -1,0 +1,1 @@
+puppet apply -e 'file { "/tmp/helloPuppet": content => "Hello World!\n" }'
