@@ -1,0 +1,49 @@
+import "time"
+import "strings"
+
+# Warns on all tcp checks except rfa
+description = "All tcp check except rfa"
+
+main = rule { override or not_tcp_check }
+
+not_tcp_check = rule {
+  all job.task_groups as tg {
+    all tg.tasks as t {
+      all t.services as ts {
+        all ts.checks as tc {
+         tc.type != "tcp"  
+        }
+      }
+    }
+  }
+}
+
+test_list = func(exl, list_to_check) {
+  for exl as exception {
+    if exception in list_to_check {
+      return "true"
+    } else {
+    return "false"
+    }
+  }
+}
+
+IDs = strings.split(job.id, "-")
+exl = ["rfa"]
+
+parsed_list_bool = test_list(exl, IDs)
+
+contains_exception = rule {
+  parsed_list_bool is "true"
+}
+
+
+override = rule { contains_exception }
+
+logger = func(description) {
+	n = time.load(time.now)
+	return { 
+  	"time": n.rfc3339,
+  	"sentinel_policy_description": description}
+}
+print(logger(description))

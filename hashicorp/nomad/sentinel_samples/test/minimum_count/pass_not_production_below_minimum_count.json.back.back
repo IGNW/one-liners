@@ -1,0 +1,23 @@
+{
+  "global": {
+    "job": {
+        "id": "isnt",
+        "count": 1,
+        "region": "austin-staging",
+        "task_groups": [{
+            "count": 1,
+            "tasks": [{
+              "Config": { 
+                "image": ""
+              }
+            }]
+          }]
+     }
+  },
+  "test": {
+    "main": true,
+    "count": false,
+    "is_production": false,
+    "contains_exception": true
+    }
+}

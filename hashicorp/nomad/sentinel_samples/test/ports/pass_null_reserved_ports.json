@@ -1,0 +1,27 @@
+{
+  "global": {
+    "job": {
+        "id": "isnt",
+        "count": 2,
+        "region": "austin_production",
+        "task_groups": [{
+            "count": 2,
+            "tasks": [{
+              "Config": { 
+                "image": ""
+              },
+              "resources": [{
+                "networks": [{
+                  "reserved_ports": null
+              }]
+              }]
+            }]
+          }]
+     }
+  },
+  "test": {
+    "main": true,
+    "is_reserved": false,
+    "contains_exception": false
+    }
+}

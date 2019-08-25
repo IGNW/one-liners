@@ -1,0 +1,36 @@
+{
+  "global": {
+    "job": {
+        "id": "something-wedge-something",
+        "count": 2,
+        "region": "austin_production",
+        "task_groups": [{
+            "count": 2,
+            "tasks": [{
+              "Config": { 
+                "image": ""
+              },
+              "resources": [{
+                "networks": [{
+                                  "reserved_ports": [
+                                        {
+                                            "Label": "wdg",
+                                            "Value": 33911
+                                        },
+                                        {
+                                            "Label": "wdgx",
+                                            "Value": 33913
+                                        }]
+                    
+              }]
+              }]
+            }]
+          }]
+     }
+  },
+  "test": {
+    "main": true,
+    "is_reserved": true,
+    "contains_exception": true
+    }
+}

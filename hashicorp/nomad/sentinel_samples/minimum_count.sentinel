@@ -1,0 +1,46 @@
+import "time"
+import "strings"
+
+
+# Ensures there is at least a count of 2 in production
+description = "Ensure production count is at least 2"
+
+main = rule { count or override }
+count = rule {
+	all job.task_groups as tg {
+		tg.count >= 2 and job.count >=2 or tg.count >=2
+	}
+}
+
+is_production = rule {
+	job.region is "austin-production" or
+	job.region is "dallas-production"
+}
+
+test_list = func(exl, list_to_check) {
+  for exl as exception {
+    if exception in list_to_check {
+      return "true"
+    } else {
+    return "false"
+    }
+  }
+}
+
+IDs = strings.split(job.id, "-")
+exl = ["memcache", "reports"]
+
+parsed_list_bool = test_list(exl, IDs)
+
+contains_exception = rule {
+  parsed_list_bool is "true"
+}
+
+logger = func(description) {
+	n = time.load(time.now)
+	return { 
+  	"time": n.rfc3339,
+  	"sentinel_policy_description": description}
+}
+print(logger(description))
+override = rule { not is_production or contains_exception }

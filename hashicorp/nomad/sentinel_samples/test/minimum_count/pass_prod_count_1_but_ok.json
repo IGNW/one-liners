@@ -1,0 +1,23 @@
+{
+  "global": {
+    "job": {
+        "id": "reports-isnt",
+        "count": 1,
+        "region": "austin-production",
+        "task_groups": [{
+            "count": 1,
+            "tasks": [{
+              "Config": { 
+                "image": "memcache"
+              }
+            }]
+          }]
+     }
+  },
+  "test": {
+    "main": true,
+    "count": false,
+    "is_production": true,
+    "contains_exception": true
+    }
+}

@@ -1,0 +1,23 @@
+import "time"
+time.now
+# Only allows docker based tasks
+main = rule { is_driver_docker }
+
+# is_task_driver_docker ensures drivers are docker
+is_driver_docker = rule {
+	all job.task_groups as tg {
+		all tg.tasks as ts {
+			  ts.driver is "docker"
+		}
+	}
+}
+
+
+logger = func(description) {
+	n = time.load(time.now)
+	return { 
+  	"time": n.rfc3339,
+  	"sentinel_policy_description": description}
+}
+description = "Ensures that the drive is docker"
+print(logger(description))

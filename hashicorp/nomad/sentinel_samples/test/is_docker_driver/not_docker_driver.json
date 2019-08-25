@@ -1,0 +1,20 @@
+{
+  "global": {
+    "job": {
+        "region": "austin_production",
+        "task_groups": [{
+            "tasks": [{
+              "driver": "exec",
+              "config": { 
+                "image": ""
+              }
+            }]
+          }]
+     }
+  },
+
+  "test": {
+    "main": false,
+    "is_driver_docker": false
+    }
+}
