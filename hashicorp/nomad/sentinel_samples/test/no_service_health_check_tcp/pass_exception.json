@@ -1,0 +1,27 @@
+{
+  "global": {
+    "job": {
+        "id": "rfa-or-another",
+        "count": 1,
+        "region": "austin-production",
+        "task_groups": [{
+            "count": 4,
+            "tasks": [{
+              "config": { 
+                "image": ""
+              },
+              "services": [{
+                "checks": [{
+                  "type": "tcp"
+                  }]
+              }]
+            }]
+          }]
+     }
+  },
+  "test": {
+    "main": true,
+    "not_tcp_check": false,
+    "contains_exception": true
+    }
+}

@@ -1,0 +1,20 @@
+Test descriptions
+
+fail_production.json
+  Fails because count is too low for production
+
+pass_not_production_below_minimum_count.json
+  Passes even though count is too low for production 
+  but the region is not production
+
+pass_production_count_1000.json
+  Passes with a count of 1000 which is more than 2
+
+pass_production_count_2.json
+  Passes with a count of 2 which is equal to 2
+
+pass_prod_count_1_but_ok.json
+  Passes production with count 1 because it is memcache
+
+pass_production_jobcount_1_task_groupcount_2.json
+  Passes because task group config overrides job config

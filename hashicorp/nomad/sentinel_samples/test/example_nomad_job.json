@@ -1,0 +1,245 @@
+{
+"Global": {
+    "job": {
+        "Namespace": "default",
+        "ParameterizedJob": null,
+        "ParentID": "",
+        "Payload": null,
+        "Periodic": null,
+        "Priority": 50,
+        "region": "austin-production",
+        "Reschedule": null,
+        "Stable": true,
+        "Status": "running",
+        "StatusDescription": "",
+        "Stop": false,
+        "SubmitTime": 1530048760360469417,
+        "task_groups": [
+            {
+                "Constraints": [
+                    {
+                        "LTarget": "${node.class}",
+                        "Operand": "=",
+                        "RTarget": "some_targer"
+                    }
+                ],
+                "Count": 1,
+                "EphemeralDisk": {
+                    "Migrate": false,
+                    "SizeMB": 300,
+                    "Sticky": false
+                },
+                "Meta": null,
+                "Migrate": {
+                    "HealthCheck": "checks",
+                    "HealthyDeadline": 300000000000,
+                    "MaxParallel": 1,
+                    "MinHealthyTime": 10000000000
+                },
+                "Name": "test",
+                "ReschedulePolicy": {
+                    "Attempts": 0,
+                    "Delay": 30000000000,
+                    "DelayFunction": "exponential",
+                    "Interval": 0,
+                    "MaxDelay": 3600000000000,
+                    "Unlimited": true
+                },
+                "RestartPolicy": {
+                    "Attempts": 2,
+                    "Delay": 15000000000,
+                    "Interval": 1800000000000,
+                    "Mode": "fail"
+                },
+                "tasks": [
+                    {
+                        "Artifacts": null,
+                        "Config": {
+                            "port_map": [
+                                {
+                                    "my_port": 2077.0
+                                }
+                            ],
+                            "hostname": "${node.unique.name}",
+                            "image": "my_registry/my_repository:my_image:"
+                        },
+                        "Constraints": null,
+                        "DispatchPayload": null,
+                        "Driver": "docker",
+                        "Env": {
+                            "BASE_LOG_DIRECTORY": "${NOMAD_ALLOC_DIR}/logs",
+                            "Q2_UTC_LOGGING": "true"
+                        },
+                        "KillSignal": "",
+                        "KillTimeout": 5000000000,
+                        "Leader": true,
+                        "LogConfig": {
+                            "MaxFileSizeMB": 10,
+                            "MaxFiles": 10
+                        },
+                        "Meta": null,
+                        "Name": "a_good_task",
+                        "Resources": {
+                            "CPU": 350,
+                            "DiskMB": 0,
+                            "IOPS": 0,
+                            "MemoryMB": 500,
+                            "Networks": [
+                                {
+                                    "CIDR": "",
+                                    "Device": "",
+                                    "DynamicPorts": [
+                                        {
+                                            "Label": "outside_port",
+                                            "Value": 0
+                                        }
+                                    ],
+                                    "IP": "",
+                                    "MBits": 1,
+                                    "ReservedPorts": null
+                                }
+                            ]
+                        },
+                        "Services": [
+                            {
+                                "AddressMode": "auto",
+                                "CheckRestart": null,
+                                "Checks": [
+                                    {
+                                        "AddressMode": "",
+                                        "Args": null,
+                                        "CheckRestart": null,
+                                        "Command": "",
+                                        "Header": null,
+                                        "Id": "",
+                                        "InitialStatus": "",
+                                        "Interval": 10000000000,
+                                        "Method": "",
+                                        "Name": "${NOMAD_TASK_NAME}-${NOMAD_ALLOC_INDEX}",
+                                        "Path": "/status",
+                                        "PortLabel": "my_port",
+                                        "Protocol": "",
+                                        "TLSSkipVerify": false,
+                                        "Timeout": 2000000000,
+                                        "Type": "http"
+                                    }
+                                ],
+                                "Id": "",
+                                "Name": "my-staging",
+                                "PortLabel": "my-staging"
+                            }
+                        ],
+                        "ShutdownDelay": 0,
+                        "Templates": [
+                            {
+                                "ChangeMode": "restart",
+                                "ChangeSignal": "",
+                                "DestPath": "local/restart.info",
+                                "Envvars": false,
+                                "LeftDelim": "{{",
+                                "Perms": "0644",
+                                "RightDelim": "}}",
+                                "SourcePath": "",
+                                "Splay": 5000000000,
+                                "VaultGrace": 15000000000
+                            }
+                        ],
+                        "User": "",
+                        "Vault": null
+                    },
+                    {
+                        "Artifacts": null,
+                        "Config": {
+                            "hostname": "localhost",
+                            "image": "my_image_endpoint",
+                            "volumes": [
+                                "local/conf:/etc/my.conf"
+                            ]
+                        },
+                        "Constraints": null,
+                        "DispatchPayload": null,
+                        "Driver": "docker",
+                        "Env": null,
+                        "KillSignal": "",
+                        "KillTimeout": 5000000000,
+                        "Leader": false,
+                        "LogConfig": {
+                            "MaxFileSizeMB": 1,
+                            "MaxFiles": 3
+                        },
+                        "Meta": null,
+                        "Name": "staging-logship",
+                        "Resources": {
+                            "CPU": 300,
+                            "DiskMB": 0,
+                            "IOPS": 0,
+                            "MemoryMB": 1000,
+                            "Networks": [
+                                {
+                                    "CIDR": "",
+                                    "Device": "",
+                                    "DynamicPorts": null,
+                                    "IP": "",
+                                    "MBits": 1,
+                                    "ReservedPorts": null
+                                }
+                            ]
+                        },
+                        "Services": null,
+                        "ShutdownDelay": 0,
+                        "Templates": [
+                            {
+                                "ChangeMode": "restart",
+                                "ChangeSignal": "",
+                                "DestPath": "local/restart.info",
+                                "Envvars": false,
+                                "LeftDelim": "{{",
+                                "Perms": "0644",
+                                "RightDelim": "}}",
+                                "SourcePath": "",
+                                "Splay": 5000000000,
+                                "VaultGrace": 15000000000
+                            },
+                            {
+                                "ChangeMode": "restart",
+                                "ChangeSignal": "",
+                                "DestPath": "local/other_agent.conf",
+                                "Envvars": false,
+                                "LeftDelim": "{{",
+                                "Perms": "0644",
+                                "RightDelim": "}}",
+                                "SourcePath": "",
+                                "Splay": 5000000000,
+                                "VaultGrace": 15000000000
+                            }
+                        ],
+                        "User": "",
+                        "Vault": null
+                    }
+                ],
+                "Update": {
+                    "AutoRevert": false,
+                    "Canary": 0,
+                    "HealthCheck": "checks",
+                    "HealthyDeadline": 300000000000,
+                    "MaxParallel": 1,
+                    "MinHealthyTime": 10000000000,
+                    "Stagger": 30000000000
+                }
+            }
+        ],
+        "Type": "service",
+        "Update": {
+            "AutoRevert": false,
+            "Canary": 0,
+            "HealthCheck": "",
+            "HealthyDeadline": 0,
+            "MaxParallel": 1,
+            "MinHealthyTime": 0,
+            "Stagger": 30000000000
+        },
+        "VaultToken": "",
+        "Version": 21
+    }
+}
+}

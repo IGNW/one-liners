@@ -1,0 +1,49 @@
+import "time"
+import "strings"
+
+description = "This policy prevents static port assigment"
+
+main = rule { not is_reserved or contains_exception}
+
+is_reserved = rule {
+  all job.task_groups as tg {
+    all tg.tasks as t {
+      all t.resources as tr {
+        all tr.networks as trn {
+          trn.reserved_ports != null 
+        }
+      }
+    }
+  }
+}
+
+
+
+test_list = func(exl, list_to_check) {
+  for exl as exception {
+    if exception in list_to_check {
+      return "true"
+    } else {
+    return "false"
+    }
+  }
+}
+
+IDs = strings.split(job.id, "-")
+exl = ["fabio", "wedge"]
+
+parsed_list_bool = test_list(exl, IDs)
+
+contains_exception = rule {
+  parsed_list_bool is "true"
+}
+
+
+logger = func(description) {
+	n = time.load(time.now)
+	return {
+  	"time": n.rfc3339,
+  	"sentinel_policy_description": description}
+}
+
+print(logger(description))
