@@ -1,0 +1,5 @@
+### Simple script to login to vault with your ldap username and password while not persisting your token. Normally a token is stored in ~/.vault-token
+### This circumvents that and persists only while the shell is live
+### you can see your token by checking the environment variable
+### `env | grep VAULT_TOKEN`
+export VAULT_TOKEN="$(vault login -token-only -method=ldap username=tylerw)"
