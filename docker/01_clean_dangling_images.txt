@@ -1,0 +1,7 @@
+# Works on Windows
+docker images -qf dangling=true | xargs docker rmi
+# then 
+docker rmi [image]
+
+# Works on Mac
+docker image prune
