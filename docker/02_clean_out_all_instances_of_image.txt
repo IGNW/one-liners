@@ -1,0 +1,1 @@
+docker images | grep "[container_name]" | awk '{print $3}' | uniq | xargs docker rmi -f

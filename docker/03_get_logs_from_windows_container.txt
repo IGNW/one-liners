@@ -1,0 +1,20 @@
+# find service container id
+docker ps
+
+
+# create ps session inside container
+docker exec -it <container_id> powershell
+
+# run this command to extract all errors and export it to csv
+Get-EventLog -LogName RPServices -Source CATService -ET Error -After (Get-Date).AddMinutes(-600) | Export-CSV ~/last600minutes.CSV
+
+# CSV gets created at :
+C:\users\containeradministrator
+
+# If CSV doesn't get created at above location then we can search the csv file in docker container using command:
+gci -recurse -filter "last600minutes.csv" -File -ErrorAction SilentlyContinue
+
+# Command above will find and list the dir of the file inside docker container
+
+Run copy command:
+docker cp <container_id>:/users/containeradministrator/last600minutes.csv /
