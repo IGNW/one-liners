@@ -2,14 +2,14 @@
 ## Task
 ```
 tasks:                                                                                                                                                             
-  - name: What day of the week is Monday the first of October 2019?                                                                                                                                               
+  - name: What day of the week is the first of October 2019?                                                                                                                                               
     set_fact:                                                                                                                                                      
       my_date: '{{ ("2019-10-01" | to_datetime("%Y-%m-%d")).strftime("%A") }}'   
 ```
 
 ## Contents of `my_date`
 ```
-Monday
+Tuesday
 ```
 
 This uses the `to_datetime` filter in ansible then calls the strftime method on the date/time object.
