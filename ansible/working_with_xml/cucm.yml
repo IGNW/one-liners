@@ -1,0 +1,28 @@
+# Loads up the XML data to be sent to CUCM from the other file in this directory
+
+- hosts: localhost
+  tasks:
+    - name: file_contents
+      debug:
+        msg: "{{ lookup('file', 'listUser.xml')}}"
+ 
+    - name: can i hit cucm?
+      uri:
+        url: "https://cucm.poc.ignw.local:8443/axl/"
+        user: "admin"
+        password: "**********"       # Enter real password
+        method: POST
+        validate_certs: no
+        body: "{{ lookup('file', 'listUser.xml') }}"
+        headers:
+          Content-Type: "text/xml"
+          SOAPAction: "CUCM:DB ver=12.5 listUser"
+        force: yes
+        return_content: yes
+
+      register: out
+
+
+    - name: debug
+      debug:
+        var: out
