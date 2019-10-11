@@ -25,3 +25,8 @@ This is the pretty version of the XML that will be used in the playbook files
     </soapenv:Body>
 </soapenv:Envelope>
 ```
+
+
+The `xml.yml` has some code on how to work with XML in Ansible
+
+The `cucm.yml` and `listUser.xml` files are used to show how to send requests to a CUCM Server.
