@@ -1,0 +1,17 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.cisco.com/AXL/API/12.5">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:listUser>
+         <searchCriteria>
+            <userid>%</userid>     # The percent is a wildcard
+         </searchCriteria>
+         <returnedTags>
+            <firstName>?</firstName>
+            <middleName>?</middleName>
+            <lastName>?</lastName>
+            <emMaxLoginTime>?</emMaxLoginTime>
+            <userid>?</userid>
+         </returnedTags>
+      </ns:listUser>
+   </soapenv:Body>
+</soapenv:Envelope>
