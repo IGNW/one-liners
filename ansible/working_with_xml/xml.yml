@@ -1,0 +1,148 @@
+# This file shows some code example on working with XML in Ansible
+- hosts: localhost
+  tasks:
+    - name: set sample xml data
+      set_fact:
+        sample_xml: |
+          <?xml version='1.0' encoding='UTF-8'?>
+          <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+              <soapenv:Body>
+                  <ns:listUserResponse xmlns:ns="http://www.cisco.com/AXL/API/12.5">
+                      <return>
+                          <user uuid="{F5653A7D-1D91-F407-631F-01B29DC25EAA}">
+                              <firstName>Joe</firstName>
+                              <middleName/>
+                              <lastName>Test</lastName>
+                              <emMaxLoginTime/>
+                              <userid>joetest</userid>
+                          </user>
+                          <user uuid="{083C72B4-EA4C-D7F5-84DD-751C9EBC1562}">
+                              <firstName/>
+                              <middleName/>
+                              <lastName>test2</lastName>
+                              <emMaxLoginTime/>
+                              <userid>joetest2</userid>
+                          </user>
+                      </return>
+                  </ns:listUserResponse>
+              </soapenv:Body>
+          </soapenv:Envelope>
+
+    # This is how to define namespaces in the XML, and search for a specific attribute in the XML
+    # Define the namespace, give it an alias (the n and s in the namespaces dicts) and use xpath to pull out matches
+    # This block will pull out the 2 entries for firstName in the results 
+    - name: parse xml
+      xml:
+        xmlstring: "{{ sample_xml }}"
+        xpath: /s:Envelope/s:Body/n:listUserResponse/return/user/firstName
+        namespaces:
+          s: "http://schemas.xmlsoap.org/soap/envelope/"
+          n: "http://www.cisco.com/AXL/API/12.5"
+        content: text
+      register: xmlout
+    
+    - name: debug
+      debug:
+        var:
+          xmlout
+    
+    # This is how to use xpath to just search the whole tree.  Less efficient than the first way but easier to code.
+    # If dealing with large XML blobs, may want to specifically define what you're looking for
+    - name: parse xml a different way
+      xml:
+        xmlstring: "{{ sample_xml }}"
+        xpath: //firstName
+        content: text
+      register: xmlout
+    
+    - name: debug
+      debug:
+        var:
+          xmlout
+    
+    # This is how to search for all data under a specific attribute.
+    # The problem is it flattens the results to a single list of dict
+    # You loose the parameter association, so you don't know which attributes should be grouped together
+    - name: parse xml a different way
+      xml:
+        xmlstring: "{{ sample_xml }}"
+        xpath: //user/*
+        content: text
+      register: xmlout
+    
+    - name: debug
+      debug:
+        var:
+          xmlout
+
+
+    # This next section shows how to extract the data and preserve grouping.
+
+    # First count the number of items in your user attributes
+    - name: determine qty of items returned
+      xml:
+        xmlstring: "{{ sample_xml }}"
+        xpath: //user
+        count: yes
+      register: returned_qty
+
+    # Address each user element directly using the xpath list notation
+    # //user[1]/* addresses all elements under the first user attribute
+    # //user[2]/* addresses all elements under the second
+    # So set up a loop and pulled each group of data out seperately and store in a list of dicts of the results
+    - name: pull the data out of the xml blob and store it in a dictionary
+      xml:
+        xmlstring: "{{ sample_xml }}"
+        xpath: //user[{{ item }}]/*
+        content: text
+      register: my_data
+      loop: "{{ range(1, returned_qty.count + 1, 1)|list }}"
+
+    # Combine the results for each iteration is a list of dicts, but each dict is an attribute
+    # [
+    #         {
+    #             "firstName": "Joe"
+    #         },
+    #         {
+    #             "middleName": null
+    #         },
+    #         {
+    #             "lastName": "Test"
+    #         },
+    #         {
+    #             "emMaxLoginTime": null
+    #         },
+    #         {
+    #             "userid": "joetest"
+    #         }
+    # ]
+    #
+    # The following statement will combine each group into a single dictionary, and then append the results to a new dict.
+    - name: pull out the desired data into a list of dictionaries
+      set_fact:
+        dict_out: "{{ dict_out|default([]) + [({} | combine(item.matches))]   }}"
+      loop: "{{ my_data.results }}"
+    
+    - name: debug
+      debug:
+        var:
+          dict_out 
+
+    # This is the final results
+    #
+    # [
+    #     {
+    #         "emMaxLoginTime": null,
+    #         "firstName": "Joe",
+    #         "lastName": "Test",
+    #         "middleName": null,
+    #         "userid": "joetest"
+    #     },
+    #     {
+    #         "emMaxLoginTime": null,
+    #         "firstName": null,
+    #         "lastName": "test2",
+    #         "middleName": null,
+    #         "userid": "joetest2"
+    #     }
+    # ]
